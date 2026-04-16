@@ -21,6 +21,32 @@ Assignment_equest
 └── frontend/   Next.js app
 ```
 
+## Screenshots
+
+### Register
+
+![register](https://github.com/user-attachments/assets/72b4df07-1fb0-4e29-9980-b3f6ffee8aaa)
+
+### Login
+
+![login](https://github.com/user-attachments/assets/01f9f8b2-5ca0-433d-b536-aee874f605d6)
+
+### Jobs listing
+
+![jobs listing](https://github.com/user-attachments/assets/4bf41c90-8b19-4ceb-8b8d-8c9902b9017e)
+
+### Job detail
+
+![job detail](https://github.com/user-attachments/assets/54dcbb8e-f013-4a00-b528-df14f11cd220)
+
+### Employer dashboard
+
+![employer dashboard](https://github.com/user-attachments/assets/0686cf45-dccc-4935-888b-437066f00a04)
+
+### Post a job
+
+![post a job](https://github.com/user-attachments/assets/303ea0a5-5b73-4b0a-ab61-4125d868b420)
+
 ## How to run
 
 You need Node 18+, MongoDB and Redis running locally (or any Redis Cloud URL).
