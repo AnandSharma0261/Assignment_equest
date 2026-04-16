@@ -34,7 +34,10 @@ export const listJobs = asyncHandler(async (req, res) => {
 
   const filter = {};
   if (status) filter.status = status;
-  if (jobType) filter.jobType = jobType;
+  if (jobType) {
+    const types = jobType.split(',').map((s) => s.trim()).filter(Boolean);
+    filter.jobType = types.length > 1 ? { $in: types } : types[0];
+  }
   if (location) filter.location = { $regex: location, $options: 'i' };
   if (search) {
     filter.$or = [

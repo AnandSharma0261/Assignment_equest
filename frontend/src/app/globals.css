@@ -13,6 +13,20 @@
   --color-bg-subtle: #F8FAFC;
   --color-toggle: #F2F4F6;
   --color-button-soft: #E6E8EA;
+  --color-hero: #ECEEF0;
+  --color-icon-muted: #737686;
+  --color-border-solid: #C3C6D7;
+
+  --color-tag-blue-bg: #DBE1FF;
+  --color-tag-blue-fg: #003EA8;
+  --color-tag-green-bg: #DCFCE7;
+  --color-tag-green-fg: #166534;
+  --color-tag-purple-bg: #F3E8FF;
+  --color-tag-purple-fg: #6B21A8;
+  --color-tag-yellow-bg: #FEF9C3;
+  --color-tag-yellow-fg: #854D0E;
+  --color-tag-gray-bg: #E6E8EA;
+  --color-tag-gray-fg: #434655;
 
   --color-border: rgba(195, 198, 215, 0.2);
   --color-border-faint: rgba(195, 198, 215, 0.1);
