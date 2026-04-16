@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import DetailFooter from '@/components/DetailFooter';
+import BottomNavBar from '@/components/BottomNavBar';
 import BackLink from '@/components/Breadcrumb';
 import ApplyCard from '@/components/ApplyCard';
 import CompanyCard from '@/components/CompanyCard';
@@ -32,7 +33,7 @@ export default async function JobDetailPage({
   const initials = companyInitials(job.company);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col pb-16 md:pb-0">
       <Navbar />
 
       <main className="mx-auto w-full max-w-[1280px] flex-1 px-6 py-12 md:px-12 md:pt-16">
@@ -103,23 +104,21 @@ export default async function JobDetailPage({
                 <h2 className="text-xl font-semibold text-ink">The Team Culture</h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="aspect-[361/192] overflow-hidden rounded-[20px]">
-                    <div
-                      className="h-full w-full"
-                      style={{
-                        background:
-                          'linear-gradient(135deg, #c7b8a4 0%, #a68e75 50%, #8b7556 100%)',
-                      }}
-                      aria-hidden="true"
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=640&fit=crop&auto=format&q=80"
+                      alt="Team collaborating around a table"
+                      className="h-full w-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                   <div className="aspect-[361/192] overflow-hidden rounded-[20px]">
-                    <div
-                      className="h-full w-full"
-                      style={{
-                        background:
-                          'linear-gradient(180deg, #1a2942 0%, #3d5382 50%, #d19e68 100%)',
-                      }}
-                      aria-hidden="true"
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=640&fit=crop&auto=format&q=80"
+                      alt="Colleagues working together in a bright office"
+                      className="h-full w-full object-cover"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -140,6 +139,8 @@ export default async function JobDetailPage({
       </main>
 
       <DetailFooter />
+
+      <BottomNavBar />
     </div>
   );
 }

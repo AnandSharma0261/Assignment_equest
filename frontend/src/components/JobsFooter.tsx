@@ -39,7 +39,7 @@ export default function JobsFooter() {
       <div className="mx-auto max-w-[1280px] px-6 py-12 md:px-12">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="space-y-4">
-            <Logo size="sm" />
+            <Logo size="sm" variant="solid" />
             <p className="max-w-[272px] text-base leading-[26px] text-[color:var(--color-ink-faint)]">
               The premium editorial career gallery for elite professionals and
               industry-leading design teams.

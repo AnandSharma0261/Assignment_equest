@@ -71,7 +71,7 @@ export default function RegisterFormPage({
       <main className="flex flex-1 items-center justify-center px-6 py-12">
         <div className="flex w-full max-w-[576px] flex-col items-stretch gap-10">
           <div className="flex justify-center">
-            <Logo size="md" />
+            <Logo size="md" variant="solid" />
           </div>
 
           <AuthCard>

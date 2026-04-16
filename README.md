@@ -1,146 +1,192 @@
-# JobBoard — Full Stack Practical Assignment
+# JobBoard
 
-**Duration:** 8 Hours
-**Mode:** Work From Home
-**Stack:** Next.js · Node.js · Express.js · MongoDB · Redis
+A full stack job listing app built for the eQuest MERN practical.
 
----
+Users can browse jobs, search, filter, and apply. Employers can post jobs, close them, and track applications.
 
-## Overview
+## Stack
 
-Build a job listing web application called **JobBoard**.
+- Frontend: Next.js (App Router) + Tailwind
+- Backend: Node.js + Express
+- Database: MongoDB
+- Cache: Redis
+- Auth: JWT in HttpOnly cookie
+- Email: Nodemailer over Gmail SMTP
 
-The application should allow users to browse job postings, search and filter by role or location, apply for jobs, and allow employers to post new listings. The backend should be performant with caching applied where appropriate, and the frontend should use Next.js with deliberate rendering strategy choices per page.
+## Folder structure
 
----
+```
+Assignment_equest
+├── backend/    Express API
+└── frontend/   Next.js app
+```
 
-## Design Reference
+## How to run
 
-The UI design is provided as a Figma file. Your implementation should follow this design.
+You need Node 18+, MongoDB and Redis running locally (or any Redis Cloud URL).
 
-🔗 **Figma Link:** [Click here to view the design](https://www.figma.com/design/G3M2HlarjjkX34jVix9Kir/eQuest-Solutions---MERN-Stack-Practical---Jobs-Board?t=dQNrO0IeLWQVx4i4-1)
+### 1. Install
 
----
+```bash
+cd backend
+npm install
 
-## Tech Stack
+cd ../frontend
+npm install
+```
 
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js (App Router) |
-| Backend | Node.js + Express.js |
-| Database | MongoDB |
-| Caching | Redis (local or Redis Cloud free tier) |
-| Styling | Tailwind CSS |
-| Auth | JWT + HttpOnly Cookies |
+### 2. Environment files
 
----
+.env files are gitignored so they will not show up after you clone. Create them with the values below. These are the same values I am using for development.
 
-## Features
+**backend/.env**
 
-### 🔴 Must Have
+```
+PORT=5000
+NODE_ENV=development
 
-- Job listing page — display jobs with title, company name, location, job type (full-time/part-time/remote), and date posted
-- Search jobs by title or keyword
-- Filter by job type and location
-- Job detail page — full details of a single job posting
-- JWT-based authentication — separate roles for **Job Seeker** and **Employer**
-- Token stored in HttpOnly cookie
-- Employer can post a new job (protected — employer role only)
-- Job Seeker can apply for a job (protected — seeker role only), application saved to MongoDB
-- Redis caching on the job listing and job detail API endpoints with appropriate TTL
-- Cache invalidation when a new job is posted
+MONGO_URI=mongodb://127.0.0.1:27017/jobboard
+REDIS_URL=redis://127.0.0.1:6379
 
-### 🟡 Good to Have
+JWT_SECRET=dev_only_secret_change_me_in_prod_9f8e7d6c5b4a
+JWT_EXPIRES_IN=7d
+COOKIE_NAME=jb_token
 
-- Responsive design
-- ISR or SSG for the job listing page with appropriate revalidation strategy
-- SSR for the job detail page
-- Job Seeker can view their submitted applications
-- Employer can view all applications received for their job postings
-- Debounced search input
-- Pagination on the job listings
+CLIENT_ORIGIN=http://localhost:3000
 
-### 🟢 Bonus
+CACHE_TTL_LIST=120
+CACHE_TTL_DETAIL=600
 
-- Email notification on application (use Nodemailer with a free Gmail SMTP — no paid service)
-- Employer can mark a job as closed — no new applications accepted
-- Application status tracking — employer can update status to Shortlisted, Rejected, or Hired
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=
+SMTP_PASS=
+MAIL_FROM="JobBoard <no-reply@jobboard.local>"
+```
 
----
+Email sending is optional. To try the notification feature, put a Gmail address in `SMTP_USER` and a Gmail app password in `SMTP_PASS`. If you leave them blank the app still works, it just skips sending the mail.
 
-## Backend Endpoints
+**frontend/.env.local**
 
-Your Express backend should expose at minimum the following. You are free to add more as needed.
+```
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+API_INTERNAL_URL=http://localhost:5000/api
+```
+
+### 3. Seed the database
+
+Make sure MongoDB and Redis are running. Then:
+
+```bash
+cd backend
+npm run seed
+```
+
+This wipes the collections and creates 12 jobs, 3 employers and 2 seekers.
+
+Test accounts (both use password `Passw0rd!`):
+
+- Employer: `acme@employer.com`
+- Seeker: `ananya@seeker.com`
+
+### 4. Start the servers
+
+In one terminal:
+
+```bash
+cd backend
+npm run dev
+```
+
+In another:
+
+```bash
+cd frontend
+npm run dev
+```
+
+Open http://localhost:3000
+
+## Features Done
+
+
+- [x] Job listing page with title, company, location, type and posted date
+- [x] Search by title or keyword
+- [x] Filter by job type and location
+- [x] Job detail page
+- [x] JWT auth with HttpOnly cookie
+- [x] Separate roles for seeker and employer
+- [x] Employer can post a job (role protected)
+- [x] Seeker can apply to a job (role protected), application saved in MongoDB
+- [x] Redis caching on list and detail endpoints with TTL
+- [x] Cache invalidation when a new job is posted
+
+
+
+- [x] Responsive design
+- [x] ISR on the job listing page
+- [x] SSR on the job detail page
+- [x] Seeker can see their own applications
+- [x] Employer can see all applications on their jobs
+- [x] Debounced search input
+- [x] Pagination on the listings
+
+### Bonus Done
+
+- [x] Email notification to the employer when a seeker applies (Nodemailer + Gmail SMTP)
+- [x] Employer can close a job, after which new applications are blocked
+- [x] Application status tracking (Shortlisted, Rejected, Hired)
+
+## API endpoints
 
 ```
 POST   /api/auth/register
 POST   /api/auth/login
+POST   /api/auth/logout
+GET    /api/auth/me
 
-GET    /api/jobs               → All job listings (cached in Redis)
-GET    /api/jobs/:id           → Single job detail (cached in Redis)
-POST   /api/jobs               → Post a new job (employer only)
+GET    /api/jobs
+GET    /api/jobs/:id
+POST   /api/jobs
+PATCH  /api/jobs/:id/close
+GET    /api/jobs/mine/posted
 
-POST   /api/applications       → Apply for a job (seeker only)
-GET    /api/applications/mine  → Seeker's submitted applications (protected)
-GET    /api/applications/job/:jobId  → All applications for a job (employer only)
+POST   /api/applications
+GET    /api/applications/mine
+GET    /api/applications/job/:jobId
+PATCH  /api/applications/:id/status
 ```
 
----
+## Caching approach
 
-## Caching Requirements
+- `GET /api/jobs` is cached with a key built from the filter and pagination params. TTL is 120 seconds.
+- `GET /api/jobs/:id` is cached per job id. TTL is 600 seconds.
+- When an employer posts a new job, all list cache keys are cleared so the new job shows up right away.
+- When an application is created or a job is closed, the detail cache for that job is cleared so `applicantCount` and status stay correct.
 
-This is a core part of the assessment.
+Why these TTLs: listings change often as new jobs come in, so a short TTL (2 min) keeps things fresh without hammering Mongo. A single job changes less often so 10 min is enough, and invalidation handles the important writes anyway.
 
-- `GET /api/jobs` and `GET /api/jobs/:id` must use Redis to cache responses
-- Cached data should have a suitable TTL
-- When a new job is posted via `POST /api/jobs`, the job listing cache should be invalidated
-- Be prepared to explain your caching approach and TTL decisions in your walkthrough
+## Rendering strategy
 
----
+- `/jobs` (listing): ISR with 60 second revalidation. The page is mostly read heavy, search and filter work through query params so the shell stays cached and reacts to URL changes.
+- `/jobs/[id]` (detail): SSR. Fetched on every request so status and applicant count are always current. The Redis cache on the API means this is still fast.
+- Auth pages, apply form, employer dashboard and application lists: client side or SSR with `no-store` because they are user specific and change with every action.
 
-## Rendering Strategy
+## Seed data
 
-Be deliberate about which Next.js rendering strategy you use for each page and be prepared to justify your choices during the review.
+The seed script creates 12 jobs across 5 job types (full-time, part-time, remote, contract, internship) and 6 locations. Two demo applications are also created so the employer dashboard has something to show on first login.
 
-- Consider which pages benefit from SSR, SSG, or ISR
-- Consider which pages require client-side rendering
-- This is evaluated — not just whether it works, but why you made each choice
+## Walkthrough
 
----
+Loom free plan only lets me record 5 minutes per video, so the walkthrough is split into two parts.
 
-## Seed Data
+- Part 1: https://www.loom.com/share/f21bb8640b0449afbea3f4eb4bd1abcb
+- Part 2: https://www.loom.com/share/be70a4ea100942fb88c6ad9ea355e651
 
-Seed your database with at least 10 job postings across at least 3 job types and 3 locations. You can use a seed script or add data manually. Each job should include: title, company, location, job type, description, salary range (optional), and date posted.
+## Submission checklist
 
----
-
-## Environment Variables
-
-Never hardcode credentials or secrets in your source code. Use `.env` files and add them to `.gitignore`. Include a `.env.example` with all required variable names but no actual values.
-
----
-
-## Rules
-
-1. AI tools are allowed — Copilot, ChatGPT, Cursor, and similar are permitted
-2. You are fully responsible for understanding and explaining every part of the code you submit
-3. Do not copy entire project templates or boilerplates from GitHub
-4. Make meaningful commits throughout — your commit history is part of the evaluation
-5. Submit a Loom video (5–7 minutes) walking through the running application and explaining your key decisions — particularly around caching, cache invalidation, rendering strategy, and role-based authentication
-6. Add the Loom link to this README under a `## Walkthrough` section before your final push
-
----
-
-## Submission Checklist
-
-Before submitting, ensure the following:
-
-- [ ] App runs locally with setup instructions in this README
-- [ ] All must-have features are working
-- [ ] `.env.example` file is included
-- [ ] At least 5 meaningful commits in the history
-- [ ] Loom walkthrough video link added to this README
-
----
-
-Good luck.
+- [x] App runs locally with the steps in this README
+- [x] All must-have features working
+- [x] `.env.example` included for both backend and frontend
+- [x] 5+ meaningful commits
+- [x] Loom walkthrough links above

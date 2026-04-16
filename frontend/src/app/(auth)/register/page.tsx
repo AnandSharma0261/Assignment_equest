@@ -86,15 +86,28 @@ function BackgroundDecoration() {
 function SeekerIcon() {
   return (
     <svg viewBox="0 0 32 32" className="h-[30px] w-[30px]" fill="none" aria-hidden="true">
-      <circle cx="13" cy="11" r="5" stroke="currentColor" strokeWidth="2.5" />
-      <path
-        d="M4 27c0-4.97 4.03-9 9-9s9 4.03 9 9"
+      <circle
+        cx="13"
+        cy="10"
+        r="5"
         stroke="currentColor"
-        strokeWidth="2.5"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M4 26c0-4.97 4.03-9 9-9 1.9 0 3.66.6 5.12 1.6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <circle cx="23" cy="22" r="4" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="m26.8 25.8 2.2 2.2"
+        stroke="currentColor"
+        strokeWidth="2"
         strokeLinecap="round"
       />
-      <circle cx="23" cy="22" r="4" stroke="currentColor" strokeWidth="2.5" />
-      <path d="m26.5 25.5 3 3" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }

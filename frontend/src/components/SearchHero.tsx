@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+
+const DEBOUNCE_MS = 450;
 
 export default function SearchHero({
   initialSearch = '',
@@ -13,22 +15,43 @@ export default function SearchHero({
   const router = useRouter();
   const [search, setSearch] = useState(initialSearch);
   const [location, setLocation] = useState(initialLocation);
+  const [, startTransition] = useTransition();
+
+  const firstRender = useRef(true);
+  const lastPushed = useRef<string>('');
+
+  function pushUrl(s: string, l: string) {
+    const params = new URLSearchParams();
+    if (s.trim()) params.set('search', s.trim());
+    if (l.trim()) params.set('location', l.trim());
+    const qs = params.toString();
+    const url = qs ? `/jobs?${qs}` : '/jobs';
+    if (url === lastPushed.current) return;
+    lastPushed.current = url;
+    startTransition(() => router.push(url, { scroll: false }));
+  }
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      lastPushed.current = window.location.pathname + window.location.search;
+      return;
+    }
+    const t = setTimeout(() => pushUrl(search, location), DEBOUNCE_MS);
+    return () => clearTimeout(t);
+  }, [search, location]);
 
   function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault();
-    const params = new URLSearchParams();
-    if (search.trim()) params.set('search', search.trim());
-    if (location.trim()) params.set('location', location.trim());
-    const qs = params.toString();
-    router.push(qs ? `/jobs?${qs}` : '/jobs');
+    pushUrl(search, location);
   }
 
   return (
     <section className="bg-[color:var(--color-hero)]">
-      <div className="mx-auto grid max-w-[1184px] grid-cols-1 gap-10 px-6 py-20 md:grid-cols-2 md:px-12">
-        <div className="flex flex-col justify-center gap-6">
+      <div className="mx-auto grid max-w-[1184px] grid-cols-1 gap-10 px-6 py-20 md:px-12 lg:grid-cols-2 lg:gap-16">
+        <div className="flex min-w-0 flex-col items-center justify-center gap-6 text-center lg:items-start lg:text-left">
           <h1
-            className="text-[44px] font-bold leading-[55px] text-ink"
+            className="text-[40px] font-extrabold leading-[48px] text-ink lg:text-[44px] lg:leading-[55px]"
             style={{ letterSpacing: '-1.1px' }}
           >
             Find your next{' '}
@@ -42,35 +65,35 @@ export default function SearchHero({
 
           <form
             onSubmit={handleSubmit}
-            className="cta-shadow flex flex-col gap-2 rounded-[12px] bg-white p-2 sm:flex-row"
+            className="card-shadow flex w-full max-w-[672px] flex-col gap-2 rounded-[12px] bg-white p-3 lg:flex-row lg:p-2"
           >
-            <div className="flex flex-1 items-center gap-3 rounded-[8px] bg-[color:var(--color-toggle)] px-4">
+            <div className="flex h-[56px] min-w-0 flex-[1.8] items-center gap-2 rounded-[8px] bg-[color:var(--color-toggle)] px-3 lg:h-[56px]">
               <SearchIcon />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Job title or keyword"
-                className="h-[66px] flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--color-ink-placeholder)]"
+                className="h-full w-full min-w-0 flex-1 bg-transparent text-sm leading-[19px] text-ink outline-none placeholder:text-[#C3C6D7]"
                 autoComplete="off"
               />
             </div>
 
-            <div className="flex flex-1 items-center gap-3 rounded-[8px] bg-[color:var(--color-toggle)] px-4">
+            <div className="flex h-[56px] min-w-0 flex-1 items-center gap-2 rounded-[8px] bg-[color:var(--color-toggle)] px-3 lg:h-[56px]">
               <LocationIcon />
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Location"
-                className="h-[66px] flex-1 bg-transparent text-base outline-none placeholder:text-[color:var(--color-ink-placeholder)]"
+                className="h-full w-full min-w-0 flex-1 bg-transparent text-sm leading-[19px] text-ink outline-none placeholder:text-[#C3C6D7]"
                 autoComplete="off"
               />
             </div>
 
             <button
               type="submit"
-              className="cta-gradient rounded-[8px] px-8 py-3 text-base font-bold text-white transition-transform hover:brightness-105 active:scale-[0.99]"
+              className="cta-gradient h-14 shrink-0 rounded-[8px] px-5 text-sm font-bold text-white transition-transform hover:brightness-105 active:scale-[0.99] lg:h-[44px] lg:self-center"
             >
               Search
             </button>
@@ -107,22 +130,19 @@ function LocationIcon() {
 
 function HeroImage() {
   return (
-    <div className="relative hidden overflow-hidden rounded-[16px] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] md:block">
-      <div
-        className="aspect-[616/400] w-full"
-        style={{
-          background:
-            'linear-gradient(135deg, #cfd8e8 0%, #e8f0f8 45%, #9fbce0 100%)',
-        }}
+    <div className="relative hidden aspect-[616/400] min-w-0 overflow-hidden rounded-[16px] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)] lg:block">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://images.unsplash.com/photo-1545165375-1b744b9ed444?w=1200&h=780&fit=crop&auto=format&q=80"
+        alt="Plants lined up by a window inside a bright workspace"
+        className="absolute inset-0 h-full w-full object-cover"
+        loading="lazy"
       />
       <div
-        className="absolute inset-0"
-        style={{
-          background:
-            'radial-gradient(circle at 30% 80%, rgba(34, 100, 45, 0.5) 0%, rgba(34, 100, 45, 0) 55%), radial-gradient(circle at 70% 90%, rgba(30, 80, 40, 0.45) 0%, rgba(30, 80, 40, 0) 60%)',
-        }}
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'rgba(0, 74, 198, 0.08)' }}
+        aria-hidden="true"
       />
-      <div className="absolute inset-0" style={{ background: 'rgba(0, 74, 198, 0.08)' }} />
     </div>
   );
 }

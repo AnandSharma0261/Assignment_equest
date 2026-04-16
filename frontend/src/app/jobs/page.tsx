@@ -3,7 +3,9 @@ import JobsFooter from '@/components/JobsFooter';
 import SearchHero from '@/components/SearchHero';
 import FiltersSidebar from '@/components/FiltersSidebar';
 import JobCard from '@/components/JobCard';
-import LoadMore from '@/components/LoadMore';
+import Pagination from '@/components/Pagination';
+import QuickFilters from '@/components/QuickFilters';
+import BottomNavBar from '@/components/BottomNavBar';
 import { api } from '@/lib/api';
 import type { JobListResponse } from '@/lib/types';
 
@@ -26,7 +28,7 @@ export default async function JobsPage({
   const location = asString(sp.location);
   const jobType = asString(sp.jobType);
   const page = Math.max(1, Number(asString(sp.page)) || 1);
-  const limit = Math.min(24, Number(asString(sp.limit)) || 8);
+  const pageSize = 8;
   const sort = asString(sp.sort) === 'oldest' ? 'oldest' : 'recent';
 
   const initial: JobListResponse = await api.listJobs(
@@ -35,20 +37,23 @@ export default async function JobsPage({
       location,
       jobType: jobType as never,
       page,
-      limit: page * limit,
+      limit: pageSize,
       sort: sort as 'recent' | 'oldest',
     },
     { next: { revalidate: 60 } },
   );
 
-  const visibleTotal = Math.min(page * limit, initial.total);
+  const rangeStart = initial.total === 0 ? 0 : (page - 1) * pageSize + 1;
+  const rangeEnd = (page - 1) * pageSize + initial.items.length;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col pb-16 md:pb-0">
       <Navbar />
 
       <main className="flex-1">
         <SearchHero initialSearch={search} initialLocation={location} />
+
+        <QuickFilters />
 
         <section className="mx-auto max-w-[1280px] px-6 py-16 md:px-12">
           <div className="flex flex-col gap-12 md:flex-row">
@@ -59,7 +64,8 @@ export default async function JobsPage({
                 <div>
                   <h2 className="text-base font-bold text-ink">Featured Opportunities</h2>
                   <p className="text-base text-[color:var(--color-ink-muted)]">
-                    Showing {visibleTotal.toLocaleString()} of {initial.total.toLocaleString()} roles found
+                    Showing {rangeStart.toLocaleString()}–{rangeEnd.toLocaleString()} of{' '}
+                    {initial.total.toLocaleString()} roles found
                   </p>
                 </div>
 
@@ -76,11 +82,7 @@ export default async function JobsPage({
                     ))}
                   </div>
 
-                  {page * limit < initial.total && (
-                    <div className="mt-8 flex justify-center">
-                      <LoadMore nextPage={page + 1} />
-                    </div>
-                  )}
+                  <Pagination currentPage={page} totalPages={initial.pages} />
                 </>
               )}
             </div>
@@ -89,6 +91,8 @@ export default async function JobsPage({
       </main>
 
       <JobsFooter />
+
+      <BottomNavBar />
     </div>
   );
 }

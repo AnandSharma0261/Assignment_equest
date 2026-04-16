@@ -36,7 +36,6 @@ export const applyToJob = asyncHandler(async (req, res) => {
     resumeUrl,
   });
 
-  // Invalidate detail cache so applicantCount updates
   await cacheDel(keys.jobDetail(job._id.toString()));
 
   const employerEmail = job.postedBy?.email;

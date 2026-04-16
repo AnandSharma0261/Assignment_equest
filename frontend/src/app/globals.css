@@ -27,6 +27,10 @@
   --color-tag-yellow-fg: #854D0E;
   --color-tag-gray-bg: #E6E8EA;
   --color-tag-gray-fg: #434655;
+  --color-tag-red-bg: #FEE2E2;
+  --color-tag-red-fg: #991B1B;
+  --color-tag-amber-bg: #FEF3C7;
+  --color-tag-amber-fg: #92400E;
 
   --color-border: rgba(195, 198, 215, 0.2);
   --color-border-faint: rgba(195, 198, 215, 0.1);
@@ -66,7 +70,7 @@ body {
 }
 
 .cta-gradient {
-  background: linear-gradient(96.65deg, #004AC6 0%, #2563EB 100%);
+  background: linear-gradient(111.98deg, #004AC6 0%, #2563EB 100%);
 }
 
 .card-shadow {
