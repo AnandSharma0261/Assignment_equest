@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --color-ink: #191C1E;
+  --color-ink-muted: #434655;
+  --color-ink-faint: #64748B;
+  --color-ink-placeholder: #6B7280;
+
+  --color-surface: #FFFFFF;
+  --color-bg: #F7F9FB;
+  --color-bg-subtle: #F8FAFC;
+  --color-toggle: #F2F4F6;
+  --color-button-soft: #E6E8EA;
+
+  --color-border: rgba(195, 198, 215, 0.2);
+  --color-border-faint: rgba(195, 198, 215, 0.1);
+  --color-divider: #E2E8F0;
+
+  --color-brand-700: #004AC6;
+  --color-brand-600: #2563EB;
+  --color-brand-50: #E7EEFC;
+
+  --color-success: #16A34A;
+  --color-warning: #D97706;
+  --color-danger: #DC2626;
+
+  --radius-card: 8px;
+  --radius-pill: 12px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html, body { height: 100%; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, #004AC6 0%, #2563EB 100%);
+}
+
+.cta-gradient {
+  background: linear-gradient(96.65deg, #004AC6 0%, #2563EB 100%);
+}
+
+.card-shadow {
+  box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.04);
+}
+
+.cta-shadow {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="number"],
+textarea, select {
+  color: var(--color-ink);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--color-ink-placeholder);
 }
