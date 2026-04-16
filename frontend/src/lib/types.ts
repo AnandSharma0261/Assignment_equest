@@ -33,6 +33,11 @@ export interface Job {
   salaryMin?: number;
   salaryMax?: number;
   salaryCurrency?: string;
+  requirements?: string[];
+  aboutTeam?: string;
+  industry?: string;
+  companyTagline?: string;
+  applicantCount?: number;
   status: JobStatus;
   postedBy?: { _id: string; name: string; company?: string } | string;
   createdAt: string;

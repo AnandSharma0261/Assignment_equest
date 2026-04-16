@@ -17,8 +17,44 @@ const seekers = [
 ];
 
 const jobsBlueprint = [
-  { title: 'Senior Frontend Engineer', location: 'Bengaluru, India', jobType: 'full-time', salaryMin: 2500000, salaryMax: 4500000, description: 'Own large parts of our React + Next.js app. Ship features, mentor juniors, and care about performance.' },
-  { title: 'Backend Engineer (Node.js)', location: 'Remote', jobType: 'remote', salaryMin: 2000000, salaryMax: 3800000, description: 'Build Node/Express services backed by MongoDB and Redis. Strong caching and API design skills required.' },
+  {
+    title: 'Senior Frontend Engineer',
+    location: 'Bengaluru, India',
+    jobType: 'full-time',
+    salaryMin: 2500000,
+    salaryMax: 4500000,
+    industry: 'Enterprise SaaS',
+    companyTagline: 'Modern tools for modern teams',
+    description:
+      "We're seeking an exceptional Senior Frontend Engineer to own large parts of our Next.js platform. You'll ship features end-to-end, partner with design, and help set the bar for code quality and performance.\n\nThis isn't just about moving pixels — it's about defining the visual language of a high-throughput B2B product that thousands of teams rely on daily.",
+    requirements: [
+      '6+ years building production React applications with strong TypeScript fluency.',
+      'Experience leading performance work in Next.js — streaming, ISR, and prefetching tradeoffs.',
+      'A portfolio of thoughtful interaction patterns and component library work.',
+      'Comfort working across the stack with Node.js and REST APIs.',
+    ],
+    aboutTeam:
+      'We believe in focused work. No unnecessary meetings, just meaningful collaboration. We provide a ₹1L yearly learning stipend and a premium home office setup for all remote employees.',
+  },
+  {
+    title: 'Backend Engineer (Node.js)',
+    location: 'Remote',
+    jobType: 'remote',
+    salaryMin: 2000000,
+    salaryMax: 3800000,
+    industry: 'Developer Infrastructure',
+    companyTagline: 'Infrastructure that scales with you',
+    description:
+      'Build Node/Express services backed by MongoDB and Redis. Strong caching and API design skills required. You will own critical paths end-to-end from schema design to deploy.',
+    requirements: [
+      '4+ years of production Node.js and Express experience.',
+      'Strong understanding of Redis caching patterns and cache invalidation.',
+      'Hands-on experience with MongoDB, including indexing and query profiling.',
+      'Bias to ship — you prefer clear, simple code over clever abstractions.',
+    ],
+    aboutTeam:
+      'Async-first, doc-heavy. We ship in small increments and rely on strong writing to stay in sync across time zones.',
+  },
   { title: 'Full Stack Developer', location: 'Pune, India', jobType: 'full-time', salaryMin: 1800000, salaryMax: 3200000, description: 'Work across the stack using Next.js, Node.js, and MongoDB. Comfortable with ISR/SSR tradeoffs.' },
   { title: 'DevOps Engineer', location: 'Hyderabad, India', jobType: 'full-time', salaryMin: 2200000, salaryMax: 3800000, description: 'Manage CI/CD, AWS infra, Redis + Mongo clusters. IaC experience with Terraform a plus.' },
   { title: 'UI/UX Designer (Part-time)', location: 'Remote', jobType: 'part-time', salaryMin: 800000, salaryMax: 1400000, description: 'Design flows in Figma, collaborate with engineering, iterate on a component library.' },

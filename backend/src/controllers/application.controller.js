@@ -4,6 +4,7 @@ import Application, { APP_STATUSES } from '../models/Application.js';
 import Job from '../models/Job.js';
 import User from '../models/User.js';
 import { sendMail } from '../utils/email.js';
+import { cacheDel, keys } from '../utils/cache.js';
 
 export const applyToJob = asyncHandler(async (req, res) => {
   const { jobId, coverLetter, resumeUrl } = req.body;
@@ -34,6 +35,9 @@ export const applyToJob = asyncHandler(async (req, res) => {
     coverLetter,
     resumeUrl,
   });
+
+  // Invalidate detail cache so applicantCount updates
+  await cacheDel(keys.jobDetail(job._id.toString()));
 
   const employerEmail = job.postedBy?.email;
   if (employerEmail) {

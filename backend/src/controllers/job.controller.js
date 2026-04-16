@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import mongoose from 'mongoose';
 import Job, { JOB_TYPES } from '../models/Job.js';
+import Application from '../models/Application.js';
 import { cacheGetJSON, cacheSetJSON, cacheDel, cacheDelByPattern, keys } from '../utils/cache.js';
 
 function canonicalListQuery(q) {
@@ -97,6 +98,8 @@ export const getJob = asyncHandler(async (req, res) => {
     throw new Error('Job not found');
   }
 
+  job.applicantCount = await Application.countDocuments({ job: id });
+
   const ttl = Number(process.env.CACHE_TTL_DETAIL) || 600;
   await cacheSetJSON(cacheKey, job, ttl);
   res.set('X-Cache', 'MISS');
@@ -104,7 +107,11 @@ export const getJob = asyncHandler(async (req, res) => {
 });
 
 export const createJob = asyncHandler(async (req, res) => {
-  const { title, company, location, jobType, description, salaryMin, salaryMax, salaryCurrency } = req.body;
+  const {
+    title, company, location, jobType, description,
+    salaryMin, salaryMax, salaryCurrency,
+    requirements, aboutTeam, industry, companyTagline,
+  } = req.body;
 
   if (!title || !company || !location || !jobType || !description) {
     res.status(400);
@@ -124,6 +131,10 @@ export const createJob = asyncHandler(async (req, res) => {
     salaryMin,
     salaryMax,
     salaryCurrency,
+    requirements: Array.isArray(requirements) ? requirements.filter(Boolean) : undefined,
+    aboutTeam,
+    industry,
+    companyTagline,
     postedBy: req.user._id,
   });
 

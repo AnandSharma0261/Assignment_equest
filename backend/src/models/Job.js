@@ -12,6 +12,10 @@ const jobSchema = new mongoose.Schema(
     salaryMin: { type: Number },
     salaryMax: { type: Number },
     salaryCurrency: { type: String, default: 'INR' },
+    requirements: { type: [String], default: [] },
+    aboutTeam: { type: String, trim: true },
+    industry: { type: String, trim: true },
+    companyTagline: { type: String, trim: true },
     status: { type: String, enum: ['open', 'closed'], default: 'open', index: true },
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
