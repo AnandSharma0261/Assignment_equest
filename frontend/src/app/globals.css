@@ -21,6 +21,12 @@
   --color-brand-700: #004AC6;
   --color-brand-600: #2563EB;
   --color-brand-50: #E7EEFC;
+  --color-brand-deep: #003EA8;
+  --color-brand-tint: #DBE1FF;
+  --color-employer-accent: #31447B;
+
+  --color-pill-success-bg: #DCFCE7;
+  --color-pill-success-fg: #166534;
 
   --color-success: #16A34A;
   --color-warning: #D97706;
@@ -28,6 +34,7 @@
 
   --radius-card: 8px;
   --radius-pill: 12px;
+  --radius-xl: 24px;
 }
 
 html, body { height: 100%; }

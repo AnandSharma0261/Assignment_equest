@@ -3,25 +3,56 @@ import Link from 'next/link';
 type Props = {
   href?: string;
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'gradient' | 'solid';
   className?: string;
 };
 
 const sizes = {
-  sm: { box: 'h-8 w-8 rounded-[6px]', icon: 'h-4 w-4', text: 'text-[18px]' },
-  md: { box: 'h-10 w-10 rounded-lg', icon: 'h-5 w-5', text: 'text-2xl' },
-  lg: { box: 'h-12 w-12 rounded-lg', icon: 'h-6 w-6', text: 'text-[28px]' },
+  sm: {
+    box: 'h-8 w-8 rounded-[6px]',
+    icon: 'h-4 w-4',
+    text: 'text-[18px]',
+    tracking: '-0.5px',
+    weight: 'font-bold',
+  },
+  md: {
+    box: 'h-10 w-10 rounded-lg',
+    icon: 'h-5 w-5',
+    text: 'text-2xl',
+    tracking: '-0.6px',
+    weight: 'font-bold',
+  },
+  lg: {
+    box: 'h-10 w-10',
+    icon: 'h-[30px] w-[30px]',
+    text: 'text-[30px] leading-9',
+    tracking: '-0.75px',
+    weight: 'font-extrabold',
+  },
 };
 
-export default function Logo({ href = '/', size = 'md', className = '' }: Props) {
+export default function Logo({
+  href = '/',
+  size = 'md',
+  variant = 'gradient',
+  className = '',
+}: Props) {
   const s = sizes[size];
+  const iconWrap =
+    variant === 'gradient'
+      ? `brand-gradient inline-flex items-center justify-center ${s.box}`
+      : 'inline-flex items-center justify-center';
+  const iconColor =
+    variant === 'gradient' ? 'text-white' : 'text-[color:var(--color-brand-700)]';
+
   const content = (
     <div className={`inline-flex items-center gap-3 ${className}`}>
-      <span className={`brand-gradient inline-flex items-center justify-center ${s.box}`}>
-        <BriefcaseIcon className={`${s.icon} text-white`} />
+      <span className={iconWrap}>
+        <BriefcaseIcon className={`${s.icon} ${iconColor}`} />
       </span>
       <span
-        className={`font-bold text-ink ${s.text}`}
-        style={{ letterSpacing: '-0.6px' }}
+        className={`${s.weight} text-ink ${s.text}`}
+        style={{ letterSpacing: s.tracking }}
       >
         JobBoard
       </span>
